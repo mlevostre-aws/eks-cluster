@@ -1,74 +1,75 @@
 provider "aws" {
-  region = "eu-west-3"  # Set the Paris region
+  region = "eu-west-3" # Set the Paris region
 }
 
-# Create a new VPC
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"  # Adjust the CIDR block as per your requirements
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-}
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
 
-# Create an internet gateway and attach it to the VPC
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
-}
+  name = "devops-toolchain-vpc"
+  cidr = "10.0.0.0/16"
 
-# Create a public subnet within the VPC
-resource "aws_subnet" "public" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.1.0/24"  # Adjust the CIDR block as per your requirements
-  availability_zone = "eu-west-3a"   # Set your desired AZ in the Paris region
-}
+  azs             = ["eu-west-3a"]
+  private_subnets = ["10.0.1.0/24"]
+  public_subnets  = ["10.0.101.0/24"]
 
-# Create a route table for the public subnet and associate it with the internet gateway
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-}
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
-resource "aws_route" "public_internet_gateway" {
-  route_table_id         = aws_route_table.public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.gw.id
-}
-
-# Associate the public subnet with the public route table
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.public.id
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
 }
 
 module "eks_cluster" {
-  source = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 19.0"
 
-  cluster_name          = "my-eks-cluster"
-  subnets               = [aws_subnet.public.id]  # Use the public subnet you created in the VPC
-  vpc_id                = aws_vpc.main.id
-  # Other module parameters as needed
-}
+  cluster_name    = "devops-toolchain-cluster"
+  cluster_version = "1.27"
 
-module "node_group" {
-  source = "terraform-aws-modules/eks/aws//modules/node_group"
+  vpc_id     = module.vpc.default_vpc_id
+  subnet_ids = module.vpc.module.vpc
 
-  cluster_name = module.eks_cluster.cluster_id
-  node_group_name = "devopstoolchain-workers"
-  node_instance_type = "m3.medium"
-  node_desired_capacity = 1
-  node_min_size = 1
-  node_max_size = 2
+  cluster_endpoint_public_access = true
 
-  # If you want to use a launch template with custom configuration
-  # node_launch_template_settings = {
-  #   instance_type = "m5.medium"
-  #   # Add other settings here
-  # }
-}
+  cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+  }
 
+  eks_managed_node_groups = {
+    default = {
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
 
-module "fargate_profile" {
-  source = "terraform-aws-modules/eks/aws//modules/fargate_profile"
-  cluster_name      = module.eks_cluster.cluster_id
-  fargate_profile_name = "devopstoolchain-fargate-profile"
-  subnet_ids        = [aws_subnet.public.id]  # Use the same public subnet as your EKS nodes
-  tags              = {}  # Add any tags if needed
+      instance_types = ["t3.medium"]
+      capacity_type  = "SPOT"
+    }
+  }
+
+  # Fargate Profile(s)
+  fargate_profiles = {
+    default = {
+      name = "default"
+      selectors = [
+        {
+          namespace = "default"
+        }
+      ]
+    }
+  }
+
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
 }
