@@ -2,6 +2,19 @@ provider "aws" {
   region = "eu-west-3" # Set the Paris region
 }
 
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  load_config_file       = false
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+}
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -71,4 +84,12 @@ module "eks_cluster" {
     Environment = "dev"
     Terraform   = "true"
   }
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = module.eks_cluster.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks_cluster.cluster_id
 }
