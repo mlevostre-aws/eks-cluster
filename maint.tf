@@ -55,6 +55,15 @@ module "eks_cluster" {
       ]
     }
   }
+  # aws-auth configmap
+  manage_aws_auth_configmap = true
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::${var.aws_account_id}:user/${var.eks_user}"
+      username = "${var.eks_user}"
+      groups   = ["system:masters"]
+    }
+  ]
 
   tags = {
     Environment = "dev"
