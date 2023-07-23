@@ -61,8 +61,6 @@ module "eks_cluster" {
       ]
     }
   }
-
-  create_aws_auth_configmap = true
   # aws-auth configmap
   manage_aws_auth_configmap = true
   aws_auth_users = [
