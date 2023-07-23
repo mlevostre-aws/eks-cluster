@@ -65,6 +65,14 @@ module "eks_cluster" {
         }
       ]
     }
+    devops = {
+      name = "devops"
+      selectors = [
+        {
+          namespace = "devops"
+        }
+      ]
+    }
   }
   # aws-auth configmap
   manage_aws_auth_configmap = true
