@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "eu-west-3" # Set the Paris region
-}
+provider "aws" {}
 
 provider "kubernetes" {
   host                   = module.eks_cluster.cluster_endpoint

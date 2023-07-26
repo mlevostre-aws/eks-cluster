@@ -66,7 +66,7 @@ module "eks_cluster" {
   manage_aws_auth_configmap = true
   aws_auth_users = [
     {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current}:user/${var.eks_user}"
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.eks_user}"
       username = "${var.eks_user}"
       groups   = ["system:masters"]
     }
