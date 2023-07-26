@@ -1,18 +1,7 @@
-provider "aws" {
-  region = "eu-west-3" # Set the Paris region
-}
-
-provider "kubernetes" {
-  host                   = module.eks_cluster.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", module.eks_cluster.cluster_name]
-  }
-}
-
+/*
+Infrastructure
+*/
+data "aws_caller_identity" "current" {}
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -31,7 +20,6 @@ module "vpc" {
     Environment = "dev"
   }
 }
-
 module "eks_cluster" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
@@ -78,7 +66,7 @@ module "eks_cluster" {
   manage_aws_auth_configmap = true
   aws_auth_users = [
     {
-      userarn  = "arn:aws:iam::${var.aws_account_id}:user/${var.eks_user}"
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current}:user/${var.eks_user}"
       username = "${var.eks_user}"
       groups   = ["system:masters"]
     }
@@ -89,3 +77,6 @@ module "eks_cluster" {
     Terraform   = "true"
   }
 }
+
+
+
