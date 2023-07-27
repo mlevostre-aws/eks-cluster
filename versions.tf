@@ -12,11 +12,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-<<<<<<< HEAD
   kubernetes {
-=======
-  provider "kubernetes" {
->>>>>>> 43d2310 (feat(): add nginx ingress controller)
     host                   = module.eks_cluster.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
     exec {
