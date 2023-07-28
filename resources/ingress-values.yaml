@@ -1,0 +1,7 @@
+defaultBackend :
+  nodeSelector :
+    node : default
+
+controller : 
+  nodeSelector :
+    node : default 
