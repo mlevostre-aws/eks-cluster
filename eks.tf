@@ -18,19 +18,15 @@ module "eks_cluster" {
 
       instance_types = ["t3.medium"]
       capacity_type  = "SPOT"
+      labels = {
+        node = "default"
+      }
+
     }
   }
 
   # Fargate Profile(s)
   fargate_profiles = {
-    default = {
-      name = "default"
-      selectors = [
-        {
-          namespace = "default"
-        }
-      ]
-    }
     devops = {
       name = "devops"
       selectors = [
