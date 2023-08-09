@@ -13,8 +13,8 @@ module "eks_cluster" {
   eks_managed_node_groups = {
     default = {
       min_size     = 1
-      max_size     = 2
-      desired_size = 1
+      max_size     = 5
+      desired_size = 3
 
       instance_types = ["t3.medium"]
       capacity_type  = "SPOT"
