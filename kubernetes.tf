@@ -32,74 +32,12 @@ resource "kubernetes_cluster_role" "spinnaker_cluster_role" {
   metadata {
     name = "spinnaker-role"
   }
-  rule {
-    api_groups = [""]
-    resources = [
-      "namespaces",
-      "configmaps",
-      "events",
-      "replicationcontrollers",
-      "serviceaccounts",
-      "pods/log",
-    ]
-    verbs = ["get", "list"]
-  }
 
   rule {
-    api_groups = [""]
-    resources  = ["pods", "services", "secrets"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
-  }
-
-  rule {
-    api_groups = ["autoscaling"]
-    resources  = ["horizontalpodautoscalers"]
-    verbs      = ["list", "get"]
-  }
-
-  rule {
-    api_groups = ["apps"]
-    resources  = ["controllerrevisions"]
-    verbs      = ["list"]
-  }
-
-  rule {
-    api_groups = ["extensions", "apps"]
-    resources  = ["daemonsets", "deployments", "deployments/scale", "ingresses", "replicasets", "statefulsets"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
-  }
-
-  rule {
-    api_groups = [""]
-    resources  = ["services/proxy", "pods/portforward"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
+    api_groups = ["*"]
+    resources  = ["*"]
+    verbs = ["*"]
+    non_resource_urls = ["*"]
   }
 }
 
