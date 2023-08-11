@@ -18,6 +18,8 @@ resource "kubernetes_service_account_v1" "spinnaker_service_account" {
 
 resource "kubernetes_secret_v1" "spinnaker_service_account_secret" {
   metadata {
+    namespace = kubernetes_namespace_v1.spinnaker.metadata[0].name
+    name      = "spinnaker-service-account-secret"
     annotations = {
       "kubernetes.io/service-account.name" = kubernetes_service_account_v1.spinnaker_service_account.metadata[0].name
     }
@@ -31,30 +33,30 @@ resource "kubernetes_cluster_role_v1" "spinnaker_cluster_role" {
   }
   rule {
     api_groups = [""]
-    resources  = [
-        "namespaces",
-        "configmaps",
-        "events",
-        "replicationcontrollers",
-        "serviceaccounts",
-        "pods/log",
-      ]
-    verbs      = ["get", "list"]
+    resources = [
+      "namespaces",
+      "configmaps",
+      "events",
+      "replicationcontrollers",
+      "serviceaccounts",
+      "pods/log",
+    ]
+    verbs = ["get", "list"]
   }
 
   rule {
     api_groups = [""]
     resources  = ["pods", "services", "secrets"]
-    verbs      = [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ]
+    verbs = [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch",
+    ]
   }
 
   rule {
@@ -72,31 +74,31 @@ resource "kubernetes_cluster_role_v1" "spinnaker_cluster_role" {
   rule {
     api_groups = ["extensions", "apps"]
     resources  = ["daemonsets", "deployments", "deployments/scale", "ingresses", "replicasets", "statefulsets"]
-    verbs      = [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ]
+    verbs = [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch",
+    ]
   }
 
   rule {
     api_groups = [""]
     resources  = ["services/proxy", "pods/portforward"]
-    verbs      = [
-        "create",
-        "delete",
-        "deletecollection",
-        "get",
-        "list",
-        "patch",
-        "update",
-        "watch",
-      ]
+    verbs = [
+      "create",
+      "delete",
+      "deletecollection",
+      "get",
+      "list",
+      "patch",
+      "update",
+      "watch",
+    ]
   }
 }
 
