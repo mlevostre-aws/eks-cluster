@@ -63,7 +63,7 @@ module "iam_eks_role" {
 
   oidc_providers = {
     s3_spinnaker = {
-      provider_arn               = module.eks_cluster.provider_arn
+      provider_arn               = module.eks_cluster.oidc_provider_arn
       namespace_service_accounts = ["${kubernetes_namespace.spinnaker.metadata.0.name}:${kubernetes_service_account.spinnaker_service_account.metadata.0.name}"]
     }
   }
