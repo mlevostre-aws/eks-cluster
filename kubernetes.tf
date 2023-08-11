@@ -37,7 +37,10 @@ resource "kubernetes_cluster_role" "spinnaker_cluster_role" {
     api_groups = ["*"]
     resources  = ["*"]
     verbs = ["*"]
+  }
+  rule {
     non_resource_urls = ["*"]
+    verbs = ["*"]
   }
 }
 
