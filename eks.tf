@@ -16,7 +16,7 @@ module "eks_cluster" {
       max_size     = 5
       desired_size = 3
 
-      instance_types = ["t3.medium"]
+      instance_types = ["t2.xlarge"]
       capacity_type  = "SPOT"
       labels = {
         node = "default"
