@@ -32,74 +32,12 @@ resource "kubernetes_cluster_role" "spinnaker_cluster_role" {
   metadata {
     name = "spinnaker-role"
   }
-  rule {
-    api_groups = [""]
-    resources = [
-      "namespaces",
-      "configmaps",
-      "events",
-      "replicationcontrollers",
-      "serviceaccounts",
-      "pods/log",
-    ]
-    verbs = ["get", "list"]
-  }
 
   rule {
-    api_groups = [""]
-    resources  = ["pods", "services", "secrets"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
-  }
-
-  rule {
-    api_groups = ["autoscaling"]
-    resources  = ["horizontalpodautoscalers"]
-    verbs      = ["list", "get"]
-  }
-
-  rule {
-    api_groups = ["apps"]
-    resources  = ["controllerrevisions"]
-    verbs      = ["list"]
-  }
-
-  rule {
-    api_groups = ["extensions", "apps"]
-    resources  = ["daemonsets", "deployments", "deployments/scale", "ingresses", "replicasets", "statefulsets"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
-  }
-
-  rule {
-    api_groups = [""]
-    resources  = ["services/proxy", "pods/portforward"]
-    verbs = [
-      "create",
-      "delete",
-      "deletecollection",
-      "get",
-      "list",
-      "patch",
-      "update",
-      "watch",
-    ]
+    api_groups = ["*"]
+    resources  = ["*"]
+    verbs = ["*"]
+    non_resource_urls = ["*"]
   }
 }
 
@@ -118,3 +56,12 @@ resource "kubernetes_cluster_role_binding" "spinnaker_cluster_role" {
     namespace = kubernetes_namespace.spinnaker.metadata[0].name
   }
 }
+
+
+hal config provider kubernetes account add devops-toolchain-cluster --context $CONTEXT
+
+hal config version edit --version 1.31.0
+
+hal config deploy edit --type distributed --account-name devops-toolchain-cluster
+
+hal config storage s3 edit --region eu-west-3
