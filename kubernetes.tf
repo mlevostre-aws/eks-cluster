@@ -1,33 +1,34 @@
-resource "kubernetes_namespace_v1" "devops" {
+resource "kubernetes_namespace" "devops" {
   metadata {
     name = "devops"
   }
 }
 
-resource "kubernetes_namespace_v1" "spinnaker" {
+resource "kubernetes_namespace" "spinnaker" {
   metadata {
     name = "spinnaker"
   }
 }
 
-resource "kubernetes_service_account_v1" "spinnaker_service_account" {
+resource "kubernetes_service_account" "spinnaker_service_account" {
   metadata {
+    namespace = kubernetes_namespace.spinnaker.metadata[0].name
     name = "spinnaker-service-account"
   }
 }
 
-resource "kubernetes_secret_v1" "spinnaker_service_account_secret" {
+resource "kubernetes_secret" "spinnaker_service_account_secret" {
   metadata {
-    namespace = kubernetes_namespace_v1.spinnaker.metadata[0].name
+    namespace = kubernetes_namespace.spinnaker.metadata[0].name
     name      = "spinnaker-service-account-secret"
     annotations = {
-      "kubernetes.io/service-account.name" = kubernetes_service_account_v1.spinnaker_service_account.metadata[0].name
+      "kubernetes.io/service-account.name" = kubernetes_service_account.spinnaker_service_account.metadata[0].name
     }
   }
   type = "kubernetes.io/service-account-token"
 }
 
-resource "kubernetes_cluster_role_v1" "spinnaker_cluster_role" {
+resource "kubernetes_cluster_role" "spinnaker_cluster_role" {
   metadata {
     name = "spinnaker-role"
   }
@@ -102,18 +103,18 @@ resource "kubernetes_cluster_role_v1" "spinnaker_cluster_role" {
   }
 }
 
-resource "kubernetes_cluster_role_binding_v1" "spinnaker_cluster_role" {
+resource "kubernetes_cluster_role_binding" "spinnaker_cluster_role" {
   metadata {
     name = "spinnaker-role-binding"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role_v1.spinnaker_cluster_role.metadata[0].name
+    name      = kubernetes_cluster_role.spinnaker_cluster_role.metadata[0].name
   }
   subject {
     kind      = "ServiceAccount"
-    name      = kubernetes_service_account_v1.spinnaker_service_account.metadata[0].name
-    namespace = kubernetes_namespace_v1.spinnaker.metadata[0].name
+    name      = kubernetes_service_account.spinnaker_service_account.metadata[0].name
+    namespace = kubernetes_namespace.spinnaker.metadata[0].name
   }
 }
