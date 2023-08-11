@@ -59,3 +59,12 @@ resource "kubernetes_cluster_role_binding" "spinnaker_cluster_role" {
     namespace = kubernetes_namespace.spinnaker.metadata[0].name
   }
 }
+
+
+hal config provider kubernetes account add devops-toolchain-cluster --context $CONTEXT
+
+hal config version edit --version 1.31.0
+
+hal config deploy edit --type distributed --account-name devops-toolchain-cluster
+
+hal config storage s3 edit --region eu-west-3
