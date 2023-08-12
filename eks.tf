@@ -16,7 +16,7 @@ module "eks_cluster" {
       max_size     = 5
       desired_size = 3
 
-      instance_types = ["t2.xlarge"]
+      instance_types = ["t2.medium"]
       capacity_type  = "SPOT"
       labels = {
         node = "default"
@@ -27,15 +27,25 @@ module "eks_cluster" {
 
   # Fargate Profile(s)
   fargate_profiles = {
-    devops = {
-      name = "devops"
+    application = {
+      name = "application"
       selectors = [
         {
-          namespace = "devops"
+          namespace = "application"
+        }
+      ]
+    }
+    github = {
+      name = "github"
+      selectors = [
+        {
+          namespace = "github"
         }
       ]
     }
   }
+
+  
   # aws-auth configmap
   manage_aws_auth_configmap = true
   aws_auth_users = [

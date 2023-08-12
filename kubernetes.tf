@@ -1,12 +1,18 @@
-resource "kubernetes_namespace" "devops" {
+resource "kubernetes_namespace" "github" {
   metadata {
-    name = "devops"
+    name = "github"
   }
 }
 
 resource "kubernetes_namespace" "spinnaker" {
   metadata {
     name = "spinnaker"
+  }
+}
+
+resource "kubernetes_namespace" "application" {
+  metadata {
+    name = "application"
   }
 }
 
