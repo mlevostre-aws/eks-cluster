@@ -1,3 +1,3 @@
 locals {
-  github_action_secret_name = "github_action_secret"
+  github_action_secret_name = "github-action-secret"
 }
