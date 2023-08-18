@@ -71,7 +71,7 @@ resource "kubernetes_secret" "github_action_secret" {
   metadata {
     name = local.github_action_secret_name
   }
-  data {
+  data = {
     github_app_id              = var.github_app_id
     github_app_installation_id = var.github_app_installation_id
     github_app_private_key     = data.aws_secretsmanager_secret_version.secret_github_app_private_key.secret_string
