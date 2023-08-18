@@ -39,7 +39,7 @@ module "eks_cluster" {
       name = "github"
       selectors = [
         {
-          namespace = "github"
+          namespace = local.github_action_namespace
         }
       ]
     }

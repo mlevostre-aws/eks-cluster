@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "github" {
   metadata {
-    name = "github"
+    name = local.github_action_namespace
   }
 }
 
@@ -69,7 +69,8 @@ resource "kubernetes_cluster_role_binding" "spinnaker_cluster_role" {
 
 resource "kubernetes_secret" "github_action_secret" {
   metadata {
-    name = local.github_action_secret_name
+    name      = local.github_action_secret_name
+    namespace = local.github_action_namespace
   }
   data = {
     github_app_id              = var.github_app_id
