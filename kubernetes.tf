@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "github" {
   metadata {
-    name = "github"
+    name = local.github_action_namespace
   }
 }
 
@@ -19,7 +19,7 @@ resource "kubernetes_namespace" "application" {
 resource "kubernetes_service_account" "spinnaker_service_account" {
   metadata {
     namespace = kubernetes_namespace.spinnaker.metadata[0].name
-    name = "spinnaker-service-account"
+    name      = "spinnaker-service-account"
   }
 }
 
@@ -42,11 +42,11 @@ resource "kubernetes_cluster_role" "spinnaker_cluster_role" {
   rule {
     api_groups = ["*"]
     resources  = ["*"]
-    verbs = ["*"]
+    verbs      = ["*"]
   }
   rule {
     non_resource_urls = ["*"]
-    verbs = ["*"]
+    verbs             = ["*"]
   }
 }
 
