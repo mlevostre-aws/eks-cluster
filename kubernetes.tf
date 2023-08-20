@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "github" {
   metadata {
-    name = local.github_action_namespace
+    name = "github"
   }
 }
 
@@ -84,5 +84,5 @@ resource "kubernetes_manifest" "self_host_github_runner" {
       }
     }
   }
-  depends_on = [ time_sleep.wait_helm_runner ]
+  depends_on = [helm_release.gihtub_action]
 }
