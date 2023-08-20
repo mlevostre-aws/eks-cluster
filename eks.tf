@@ -24,27 +24,6 @@ module "eks_cluster" {
 
     }
   }
-
-  # Fargate Profile(s)
-  fargate_profiles = {
-    application = {
-      name = "application"
-      selectors = [
-        {
-          namespace = "application"
-        }
-      ]
-    }
-    github = {
-      name = "github"
-      selectors = [
-        {
-          namespace = local.github_action_namespace
-        }
-      ]
-    }
-  }
-
   
   # aws-auth configmap
   manage_aws_auth_configmap = true
