@@ -2,7 +2,7 @@ resource "kubernetes_namespace" "github" {
   metadata {
     name = "github"
   }
-  depends_on = [module.eks_cluster]
+  depends_on = [module.eks_cluster, module.vpc]
 }
 
 resource "kubernetes_namespace" "spinnaker" {
