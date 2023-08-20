@@ -2,6 +2,7 @@ resource "kubernetes_namespace" "github" {
   metadata {
     name = "github"
   }
+  depends_on = [module.eks_cluster]
 }
 
 resource "kubernetes_namespace" "spinnaker" {
