@@ -9,6 +9,10 @@ provider "kubernetes" {
     # This requires the awscli to be installed locally where Terraform is executed
     args = ["eks", "get-token", "--cluster-name", module.eks_cluster.cluster_name]
   }
+
+  experiments {
+    manifest_resource = true
+  }
 }
 
 provider "helm" {
