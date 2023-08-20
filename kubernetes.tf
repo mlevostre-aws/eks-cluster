@@ -84,5 +84,5 @@ resource "kubernetes_manifest" "self_host_github_runner" {
       }
     }
   }
-  depends_on = [ helm_release.gihtub_action ]
+  depends_on = [ time_sleep.wait_helm_runner ]
 }
