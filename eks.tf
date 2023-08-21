@@ -39,5 +39,7 @@ module "eks_cluster" {
     Environment = "dev"
     Terraform   = "true"
   }
+  
+  depends_on = [ module.vpc ]
 }
 
