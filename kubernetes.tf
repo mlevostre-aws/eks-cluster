@@ -2,7 +2,10 @@ resource "kubernetes_namespace" "github" {
   metadata {
     name = "github"
   }
-  depends_on = [module.eks_cluster]
+  depends_on = [
+    module.eks_cluster,
+    module.vpc // This depends is add to keep the internet connection still the runner not derigister
+  ]
 }
 
 resource "kubernetes_namespace" "spinnaker" {
