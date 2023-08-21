@@ -1,4 +1,3 @@
-
 resource "kubernetes_namespace" "spinnaker" {
   metadata {
     name = "spinnaker"
