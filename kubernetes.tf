@@ -14,8 +14,9 @@ resource "kubernetes_namespace" "application" {
 
 resource "kubernetes_namespace" "github" {
   metadata {
-    name = "github"
+    name = var.github_namespace_name
   }
+  depends_on = [module.eks_cluster, module.vpc ]
 }
 
 resource "kubernetes_service_account" "spinnaker_service_account" {
