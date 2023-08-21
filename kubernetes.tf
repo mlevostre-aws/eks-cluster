@@ -1,12 +1,3 @@
-resource "kubernetes_namespace" "github" {
-  metadata {
-    name = "github"
-  }
-  depends_on = [
-    module.eks_cluster,
-    module.vpc // This depends is add to keep the internet connection still the runner not derigister
-  ]
-}
 
 resource "kubernetes_namespace" "spinnaker" {
   metadata {
@@ -70,25 +61,4 @@ resource "kubernetes_cluster_role_binding" "spinnaker_cluster_role" {
     name      = kubernetes_service_account.spinnaker_service_account.metadata.0.name
     namespace = kubernetes_namespace.spinnaker.metadata.0.name
   }
-}
-
-resource "kubernetes_manifest" "self_host_github_runner" {
-  manifest = {
-    apiVersion = "actions.summerwind.dev/v1alpha1"
-    kind       = "RunnerDeployment"
-    metadata = {
-      name      = "aws-self-host"
-      namespace = kubernetes_namespace.github.metadata.0.name
-    }
-    spec = {
-      replicas = 1
-      template = {
-        spec = {
-          organization = "mlevos-demo"
-          labels       = ["aws"]
-        }
-      }
-    }
-  }
-  depends_on = [helm_release.gihtub_action]
 }
