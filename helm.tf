@@ -1,15 +1,15 @@
 resource "helm_release" "nginx_ingress" {
-  name       = var.ingress_controller_release_name
+  name       = local.ingress_controller_release_name
   repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = var.ingress_controller_release_name
+  chart      = local.ingress_controller_release_name
   depends_on = [module.eks_cluster]
   set {
     name  = "fullnameOverride"
-    value = var.ingress_controller_release_name
+    value = local.ingress_controller_release_name
   }
   set {
     name  = "controller.name "
-    value = var.ingress_controller_controller_name
+    value = local.ingress_controller_controller_name
   }
 }
 
