@@ -8,7 +8,7 @@ variable "cluster_name" {
   type        = string
 }
 
-variables "domain" {
+variable "domain" {
   description = "DNS domain"
   type        = string
 }
