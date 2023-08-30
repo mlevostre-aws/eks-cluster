@@ -54,9 +54,5 @@ resource "helm_release" "datadog" {
     name  = "datadog.site"
     value = "datadoghq.eu"
   }
-  set {
-    name  = "targetSystem"
-    value = "linux"
-  }
 }
 
