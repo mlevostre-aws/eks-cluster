@@ -24,3 +24,15 @@ resource "helm_release" "cert_manager" {
     value = "true"
   }
 }
+
+
+resource "helm_release" "datadog" {
+  name       = "datadog"
+  repository = "https://helm.datadoghq.com"
+  chart      = "datadog"
+  depends_on = [module.eks_cluster]
+  set {
+    name  = "datadog.appKey"
+    value = var.datadog_appKey
+  }
+}
