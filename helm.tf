@@ -32,7 +32,7 @@ resource "helm_release" "datadog" {
   chart      = "datadog"
   depends_on = [module.eks_cluster]
   set {
-    name  = "datadog.appKey"
-    value = var.datadog_appKey
+    name  = "datadog.apiKey"
+    value = var.datadog_apiKey
   }
 }
