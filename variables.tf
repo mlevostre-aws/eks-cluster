@@ -13,7 +13,7 @@ variable "domain" {
   type        = string
 }
 
-variable "datadog_appKey" {
+variable "datadog_apiKey" {
   description = "app Key for datadog access"
   type        = string
   sensitive   = true
