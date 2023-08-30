@@ -50,5 +50,13 @@ resource "helm_release" "datadog" {
     name  = "datadog.apiKey"
     value = var.datadog_apiKey
   }
+  set {
+    name  = "datadog.site"
+    value = "datadoghq.eu"
+  }
+  set {
+    name  = "targetSystem"
+    value = "linux"
+  }
 }
 
