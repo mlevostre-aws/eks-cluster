@@ -1,0 +1,3 @@
+controller: 
+  annotations:
+    ad.datadoghq.com/nginx.logs: '[{"source":"ingress-controller","service":"nginx"}]'

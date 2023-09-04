@@ -11,6 +11,10 @@ resource "helm_release" "nginx_ingress" {
     name  = "controller.name "
     value = local.ingress_controller_controller_name
   }
+
+  values = [
+    "${file("resources/ingress-values.yaml")}"
+  ]
 }
 
 resource "helm_release" "cert_manager" {
@@ -53,6 +57,10 @@ resource "helm_release" "datadog" {
   set {
     name  = "datadog.site"
     value = "datadoghq.eu"
+  }
+  set {
+    name  = "datadog.log.enabled"
+    value = "true"
   }
 }
 
