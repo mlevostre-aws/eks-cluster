@@ -59,7 +59,12 @@ resource "helm_release" "datadog" {
     value = "datadoghq.eu"
   }
   set {
-    name  = "datadog.log.enabled"
+    name  = "datadog.logs.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "datadog.logs.containerCollectAll"
     value = "true"
   }
 }
