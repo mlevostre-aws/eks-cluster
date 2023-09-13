@@ -12,9 +12,3 @@ variable "domain" {
   description = "DNS domain"
   type        = string
 }
-
-variable "datadog_apiKey" {
-  description = "app Key for datadog access"
-  type        = string
-  sensitive   = true
-}
