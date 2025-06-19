@@ -1,6 +1,6 @@
 module "eks_cluster" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 20.37.1"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.27"
@@ -24,16 +24,6 @@ module "eks_cluster" {
 
     }
   }
-  
-  # aws-auth configmap
-  manage_aws_auth_configmap = true
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.eks_user}"
-      username = "${var.eks_user}"
-      groups   = ["system:masters"]
-    }
-  ]
 
   tags = {
     Environment = "dev"
