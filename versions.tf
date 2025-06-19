@@ -1,4 +1,5 @@
-provider "aws" {}
+provider aws{}
+
 
 provider "kubernetes" {
   host                   = module.eks_cluster.cluster_endpoint
