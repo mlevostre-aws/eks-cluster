@@ -21,7 +21,7 @@ module "eks_cluster" {
       access_policies = {
         # 'cluster-admin' est une politique AWS EKS prédéfinie qui donne des droits complets
         "cluster-admin" = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/eks-cluster-admin-policy"
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
         }
       }
     }
