@@ -10,6 +10,9 @@ module "eks_cluster" {
 
   cluster_endpoint_public_access = true
 
+  create_iam_role = false
+  iam_role_arn = "arn:aws:iam::963675898491:role/terraform_role"
+
   eks_managed_node_groups = {
     default = {
       min_size     = 1
