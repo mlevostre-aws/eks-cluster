@@ -17,6 +17,8 @@ module "eks_cluster" {
     # 'my_ec2_admin_entry' est juste un nom logique pour cette configuration
     my_ec2_admin_entry = {
       principal_arn = data.aws_iam_role.ec2_instance_role.arn
+      type          = "STANDARD" 
+      kubernetes_groups = ["system:masters"]
       access_policies = {
         # 'cluster-admin' est une politique AWS EKS prédéfinie qui donne des droits complets
         "cluster-admin" = {
