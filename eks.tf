@@ -10,9 +10,11 @@ module "eks_cluster" {
 
   cluster_endpoint_public_access = true
 
+
   create_iam_role = false
   enable_cluster_creator_admin_permissions = true
   iam_role_arn = "arn:aws:iam::963675898491:role/terraform_role"
+  authentication_mode = "API_AND_CONFIG_MAP"
 
   eks_managed_node_groups = {
     default = {
