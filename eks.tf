@@ -15,6 +15,21 @@ module "eks_cluster" {
   enable_cluster_creator_admin_permissions = true
   iam_role_arn = "arn:aws:iam::963675898491:role/terraform_role"
   authentication_mode = "API_AND_CONFIG_MAP"
+  access_entries = {
+    example = {
+      principal_arn = "arn:aws:iam::963675898491:role/terraform_role"
+
+      policy_associations = {
+        example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = ["default"]
+            type       = "cluster"
+          }
+        }
+      }
+    }
+  }
 
   eks_managed_node_groups = {
     default = {
