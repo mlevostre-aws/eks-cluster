@@ -21,7 +21,7 @@ module "eks_cluster" {
       principal_arn = "arn:aws:iam::963675898491:user/local"
 
       policy_associations = {
-        example = {
+        admin = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
             type       = "cluster"
