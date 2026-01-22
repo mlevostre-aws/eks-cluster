@@ -51,3 +51,7 @@ module "eks_cluster" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "attach_route53_policy" {
+  role       = module.eks.eks_managed_node_groups["default"].iam_role_name
+  policy_arn = "arn:aws:iam::963675898491:policy/route53-policy"
+}
